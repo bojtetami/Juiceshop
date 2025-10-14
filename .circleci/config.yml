@@ -9,11 +9,11 @@ jobs: # a collection of steps
     steps: # a collection of executable commands
       - checkout # special step to check out source code to working directory
       - run:
-          name: update-npm
-          command: 'sudo npm install -g npm@latest'
-      - run:
           name: install-npm
           command: 'sudo npm install'
+      - run:
+          name: update-npm
+          command: 'sudo npm install -g npm@latest'
       - run:
           name: install-snyk
           command: 'sudo npm install -g snyk'     
@@ -41,10 +41,6 @@ jobs: # a collection of steps
       - run: # run snyk code test
           name: snyk code test
           command: snyk code test --severity-threshold=high --json-file-output=code-results.json || true
-      - run: # run snyk container test test
-          name: snyk container test
-          command: snyk container test cdobru/snyk-broker-cd-3 || true
-          # --username=cdobru --password=dockeR1t%@$%
  #    - run: # generate html for code
  #         name: generate HTML report for code
  #         command: cat code-results.json | snyk-to-html -o code-results.html
