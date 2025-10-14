@@ -7,7 +7,7 @@ jobs: # a collection of steps
     docker: # run the steps with Docker
       - image: cimg/node:lts # ...with this image as the primary container; this is where all `steps` will run, old base image was deprecated
     steps: # a collection of executable commands
-#      - checkout # special step to check out source code to working directory
+      - checkout # special step to check out source code to working directory
       - run:
           name: install-npm
           command: 'sudo npm install'
@@ -30,22 +30,22 @@ jobs: # a collection of steps
           name: snyk test
           command: snyk test --severity-threshold=high --json-file-output=open-source-results.json || true
           # command: snyk test --fail-on=all --json-file-output=open-source-results.json
-      - run:
-           name: generate HTML report for open-source
-           command: cat open-source-results.json | snyk-to-html -o open-source-results.html
-      - store_artifacts:
-           path: open-source-results.html          
+#      - run:
+#           name: generate HTML report for open-source
+#           command: cat open-source-results.json | snyk-to-html -o open-source-results.html
+#      - store_artifacts:
+#           path: open-source-results.html          
        - run: # run snyk monitor - run snyk monitor
            name: snyk monitor
            command: snyk monitor
       - run: # run snyk code test
           name: snyk code test
           command: snyk code test --severity-threshold=high --json-file-output=code-results.json || true
-      - run: # generate html for code
-           name: generate HTML report for code
-           command: cat code-results.json | snyk-to-html -o code-results.html
-       - store_artifacts:
-           path: code-results.html
+ #     - run: # generate html for code
+ #          name: generate HTML report for code
+ #          command: cat code-results.json | snyk-to-html -o code-results.html
+ #      - store_artifacts:
+ #          path: code-results.html
 workflows:
   snyk-build-and-test:
     jobs:
