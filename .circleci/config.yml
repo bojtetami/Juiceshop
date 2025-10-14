@@ -30,9 +30,9 @@ jobs: # a collection of steps
           name: snyk test
           command: snyk test --severity-threshold=high --json-file-output=open-source-results.json || true
           # command: snyk test --fail-on=all --json-file-output=open-source-results.json
-#      - run:
-#           name: generate HTML report for open-source
-#           command: cat open-source-results.json | snyk-to-html -o open-source-results.html
+      - run:
+           name: generate HTML report for open-source
+           command: cat open-source-results.json | snyk-to-html -o open-source-results.html
 #      - store_artifacts:
 #           path: open-source-results.html          
 #       - run: # run snyk monitor - run snyk monitor
