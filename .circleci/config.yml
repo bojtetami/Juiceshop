@@ -33,11 +33,11 @@ jobs: # a collection of steps
       - run:
            name: generate HTML report for open-source
            command: cat open-source-results.json | snyk-to-html -o open-source-results.html
-#      - store_artifacts:
-#           path: open-source-results.html          
-#       - run: # run snyk monitor - run snyk monitor
-#           name: snyk monitor
-#           command: snyk monitor
+      - store_artifacts:
+           path: open-source-results.html          
+      - run: # run snyk monitor - run snyk monitor
+           name: snyk monitor
+           command: snyk monitor
       - run: # run snyk code test
           name: snyk code test
           command: snyk code test --severity-threshold=high --json-file-output=code-results.json || true
