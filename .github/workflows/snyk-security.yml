@@ -5,7 +5,7 @@ on:
     branches: ["main"]
   pull_request:
     branches: ["main"]
-  workflow_dispatch:
+  workflow_dispatch: 
 
 jobs:
   snyk-scan:
@@ -14,14 +14,18 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v5
 
-      - name: Set up Python # Or Node, Java, etc. depending on your repo
-        uses: actions/setup-python@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          python-version: '3.10'
+          node-version: '20' # Or your preferred version
+          cache: 'npm'       # Optional: makes subsequent runs faster
+
+      - name: Install Dependencies
+        # This is the missing piece!
+        run: npm ci 
 
       - name: Install Snyk CLI
         uses: snyk/actions/setup@master
-        # No 'env' needed here, just installs the tool
 
       - name: Snyk Open Source Test (Dependencies)
         run: snyk test --severity-threshold=high
