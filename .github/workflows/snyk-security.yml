@@ -1,0 +1,33 @@
+name: Snyk Security Scan
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  snyk-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v5
+
+      - name: Set up Python # Or Node, Java, etc. depending on your repo
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.10'
+
+      - name: Install Snyk CLI
+        uses: snyk/actions/setup@master
+        # No 'env' needed here, just installs the tool
+
+      - name: Snyk Open Source Test (Dependencies)
+        run: snyk test --severity-threshold=high
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Snyk Code Test (Static Analysis)
+        run: snyk code test
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
