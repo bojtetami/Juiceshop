@@ -37,7 +37,7 @@ steps:
 
   - name: Snyk Open Source # For testing and failing please add snyk test before snyk monitor
     run: |
-      snyk monitor
+      snyk monitor --target-name=bojtetami/Juiceshop --target-reference=fancier-score-board --remote-repo-url=https://github.com/bojtetami/Juiceshop
   # For a list of additional available flags/options see: https://docs.snyk.io/snyk-cli/commands
   - name: Snyk Code # Remove || true to fail if there are vulnerabilities
     run: |
