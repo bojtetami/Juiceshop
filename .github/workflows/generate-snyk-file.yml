@@ -1,0 +1,43 @@
+name: Sync Snyk Ignores
+
+on:
+  workflow_dispatch: # Allows you to run this manually
+  schedule:
+    - cron: '0 0 * * *' # Runs every day at midnight
+
+jobs:
+  update-snyk-ignores:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
+
+      - name: Install Tool
+        run: |
+          # We install directly from the GitHub URL since it's not on PyPI
+          pip install git+https://github.com/jordanmilessnyk/ignores-to-dotsnyk.git
+
+      - name: Run ignores-to-dotsnyk
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          ORG_ID: "57ccd25d-3168-4a9a-ae07-c6e2c22e277c"        # Hardcode these or use secrets
+          PROJECT_ID: "858e355a-56c1-4200-b05c-23e610fef58a"
+        run: |
+          ignores-to-dotsnyk \
+            -o $ORG_ID \
+            -p $PROJECT_ID \
+            -a $SNYK_TOKEN \
+            -d ./
+
+      - name: Commit and Push .snyk file
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .snyk
+          # Only commit if there are changes
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update .snyk ignores from Snyk API" && git push)
