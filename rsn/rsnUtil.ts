@@ -155,3 +155,6 @@ export {
   seePatch,
   checkData
 }
+{
+  const md5 = crypto.createHash('md5')
+}
