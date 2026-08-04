@@ -11,3 +11,19 @@ export default winston.createLogger({
   ],
   format: winston.format.simple()
 })
+  makeRequestToDownstream(filteredReq)
+      .then((resp) => {
+        if (resp.statusCode) {
+          this.res.status(resp.statusCode).set(resp.headers).send(resp.body);
+        } else {
+          this.res.status(500).send(resp.statusText);
+        }
+      })
+      .catch((err) => {
+        logger.error(
+          this.logContext,
+          err,
+          'Failed to forward webhook event to Snyk Platform.',
+        );
+      });
+  }
