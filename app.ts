@@ -15,3 +15,7 @@ app()
   .catch(err => {
     throw err
   })
+oauth: {
+                  clientId: '${CLIENT_ID}',
+                  clientSecret: '${CLIENT_SECRET}',
+                },
