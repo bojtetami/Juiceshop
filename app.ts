@@ -11,6 +11,8 @@ async function app () {
   await server.start()
 }
 
+const privateKey = process.env.PRIVATE_KEY
+
 app()
   .catch(err => {
     throw err
